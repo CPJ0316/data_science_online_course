@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -106,65 +107,16 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         mCVCamera.setCvCameraViewListener(this);
 
         ActivityCompat.requestPermissions(this, new String[] {RECORD_AUDIO}, PackageManager.PERMISSION_GRANTED);
-
-        // 人臉檢測
-        OpenCVLoader.initDebug();
-
-        //初始人臉檢測
-        InputStream is = getResources().openRawResource(R.raw.haarcascade_frontalface_alt);
-        File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
-        File cascadeFile = new File(cascadeDir, "haarcascade_frontalface_alt");
-//        CascadeClassifier faceCascade = null;
-        try {
-            FileOutputStream os = new FileOutputStream(cascadeFile);
-            //創建一個緩衝區，用於從資源中讀取數據並寫入文件
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = is.read(buffer)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-            is.close();
-            os.close();
-            faceCascade = new CascadeClassifier(cascadeFile.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //初始笑臉檢測
-        InputStream smile_is = getResources().openRawResource(R.raw.haarcascade_smile);
-        File smileCascadeDir = getDir("cascade", Context.MODE_PRIVATE);
-        File smileCascadeFile = new File(smileCascadeDir, "haarcascade_smile_alt");
-
-        try {
-            FileOutputStream smile_os = new FileOutputStream(smileCascadeFile);
-            //創建一個緩衝區，用於從資源中讀取數據並寫入文件
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = smile_is.read(buffer)) != -1) {
-                smile_os.write(buffer, 0, bytesRead);
-            }
-            smile_is.close();
-            smile_os.close();
-            smileCascade = new CascadeClassifier(smileCascadeFile.getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //物體檢測
-        try{
-            // input size is 300 for this model
-            objectDetectorClass=new objectDetectorClass(getAssets(),"MBv1model.tflite","label.txt",300);
-            Log.d("MainActivity","Model is successfully loaded");
-        }
-        catch (IOException e){
-            Log.d("MainActivity","Getting some error");
-            e.printStackTrace();
-        }
-
-
         test = findViewById(R.id.input_test);
         intentRecognizer= new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intentRecognizer.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        //設定額外的屬性EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS，其值為100。這個屬性表示如果在語音輸入時，靜默持續2秒，則會視為輸入結束。
+        //intentRecognizer.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS , 2000);
+        intentRecognizer.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 60000);
+        //intentRecognizer.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 5000);
+        //設定額外的屬性EXTRA_LANGUAGE_MODEL，其值為LANGUAGE_MODEL_FREE_FORM。這個屬性指定語音辨識的語言模型為自由形式，表示可以自由地輸入語音而不限制特定語法。
+        intentRecognizer.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,  RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        //設定額外的屬性EXTRA_LANGUAGE，其值為Locale.getDefault()。這個屬性指定語音辨識的語言環境為預設的系統語言環境，即根據用戶的手機設定來決定語言。
+        intentRecognizer.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
         Log.d("CREATION","0215--------------------------------------");
         speechRecognizer= SpeechRecognizer.createSpeechRecognizer(this);
         boolean b= SpeechRecognizer.isRecognitionAvailable (this);
@@ -336,6 +288,62 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
                 //Reserved for adding future events.
             }
         });
+        // 人臉檢測
+        OpenCVLoader.initDebug();
+
+        //初始人臉檢測
+        InputStream is = getResources().openRawResource(R.raw.haarcascade_frontalface_alt);
+        File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+        File cascadeFile = new File(cascadeDir, "haarcascade_frontalface_alt");
+//        CascadeClassifier faceCascade = null;
+        try {
+            FileOutputStream os = new FileOutputStream(cascadeFile);
+            //創建一個緩衝區，用於從資源中讀取數據並寫入文件
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+            is.close();
+            os.close();
+            faceCascade = new CascadeClassifier(cascadeFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //初始笑臉檢測
+        InputStream smile_is = getResources().openRawResource(R.raw.haarcascade_smile);
+        File smileCascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+        File smileCascadeFile = new File(smileCascadeDir, "haarcascade_smile_alt");
+
+        try {
+            FileOutputStream smile_os = new FileOutputStream(smileCascadeFile);
+            //創建一個緩衝區，用於從資源中讀取數據並寫入文件
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = smile_is.read(buffer)) != -1) {
+                smile_os.write(buffer, 0, bytesRead);
+            }
+            smile_is.close();
+            smile_os.close();
+            smileCascade = new CascadeClassifier(smileCascadeFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //物體檢測
+        try{
+            // input size is 300 for this model
+            objectDetectorClass=new objectDetectorClass(getAssets(),"MBv1model.tflite","label.txt",300);
+            Log.d("MainActivity","Model is successfully loaded");
+        }
+        catch (IOException e){
+            Log.d("MainActivity","Getting some error");
+            e.printStackTrace();
+        }
+
+
+
 //        // 設定相機視圖的寬度和高度為手機螢幕的寬度和高度
 //        DisplayMetrics displayMetrics = new DisplayMetrics();
 //        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -406,7 +414,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     public void EndButton(View view){
         Log.d("CREATION","stop");
         //test.setText("stop");
-        speechRecognizer.stopListening();
+        //speechRecognizer.stopListening();
     }
     // 在 onRequestPermissionsResult() 方法中處理相機權限請求的結果
     @Override
@@ -532,7 +540,9 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
         mRgba = new Mat();
         Imgproc.cvtColor(currentMat, mRgba, Imgproc.COLOR_RGB2BGR);
-        currentMat=objectDetectorClass.recognizeImage(currentMat,input_text);
+        if(input_text!=null) {
+            currentMat = objectDetectorClass.recognizeImage(currentMat, input_text);
+        }
         if (isGrayScale) {
             // 轉換為灰階影像
             Imgproc.cvtColor(mRgba, mGray, Imgproc.COLOR_RGB2GRAY);

@@ -127,10 +127,6 @@ public class objectDetectorClass {
 
         // now predict
         interpreter.runForMultipleInputsOutputs(input,output_map);
-        // Before watching this video please watch my previous 2 video of
-        //      1. Loading tensorflow lite model
-        //      2. Predicting object
-        // In this video we will draw boxes and label it with it's name
 
         Object value=output_map.get(0);
         Object Object_class=output_map.get(1);

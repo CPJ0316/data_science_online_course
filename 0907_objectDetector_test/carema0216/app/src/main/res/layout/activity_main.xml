@@ -35,8 +35,8 @@
             android:onClick="StartButton"
             android:text="Start"
             opencv:layout_constraintBottom_toBottomOf="parent"
-            opencv:layout_constraintStart_toEndOf="@+id/btnEnd"
-            opencv:layout_constraintEnd_toStartOf="@+id/photo_btn" />
+            opencv:layout_constraintEnd_toStartOf="@+id/photo_btn"
+            opencv:layout_constraintStart_toEndOf="@+id/btnEnd" />
 
         <TextView
             android:id="@+id/input_test"
