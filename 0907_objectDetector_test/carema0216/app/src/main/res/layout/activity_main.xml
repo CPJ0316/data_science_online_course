@@ -1,0 +1,95 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:opencv="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <org.opencv.android.JavaCameraView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/camera_view"
+        opencv:show_fps="true"
+        opencv:camera_id="any"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="bottom|center_horizontal">
+
+        <Button
+            android:id="@+id/btnEnd"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
+            android:onClick="EndButton"
+            android:text="End"
+            opencv:layout_constraintBottom_toBottomOf="parent"
+            opencv:layout_constraintStart_toStartOf="parent"
+            opencv:layout_constraintEnd_toStartOf="@+id/btnStart" />
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
+            android:onClick="StartButton"
+            android:text="Start"
+            opencv:layout_constraintBottom_toBottomOf="parent"
+            opencv:layout_constraintStart_toEndOf="@+id/btnEnd"
+            opencv:layout_constraintEnd_toStartOf="@+id/photo_btn" />
+
+        <TextView
+            android:id="@+id/input_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D28EFF"
+            android:text="Hello World!"
+            opencv:layout_constraintStart_toStartOf="parent"
+            opencv:layout_constraintEnd_toEndOf="parent"
+            opencv:layout_constraintTop_toTopOf="parent"
+            />
+
+        <Button
+            android:id="@+id/photo_btn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
+            android:text="拍照"
+            opencv:layout_constraintBottom_toBottomOf="parent"
+            opencv:layout_constraintStart_toEndOf="@+id/btnStart"
+            opencv:layout_constraintEnd_toStartOf="@+id/gallery_btn" />
+
+        <Button
+            android:id="@+id/gallery_btn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
+            android:text="相簿"
+            opencv:layout_constraintBottom_toBottomOf="parent"
+            opencv:layout_constraintStart_toEndOf="@+id/photo_btn"
+            opencv:layout_constraintEnd_toStartOf="@+id/cannyedge_btn" />
+
+        <Button
+            android:id="@+id/cannyedge_btn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
+            android:text="輪廓"
+            opencv:layout_constraintBottom_toBottomOf="parent"
+            opencv:layout_constraintStart_toEndOf="@+id/gallery_btn"
+            opencv:layout_constraintEnd_toStartOf="@+id/grayscale_btn" />
+
+        <Button
+            android:id="@+id/grayscale_btn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="16dp"
+            android:text="灰階"
+            opencv:layout_constraintBottom_toBottomOf="parent"
+            opencv:layout_constraintStart_toEndOf="@+id/cannyedge_btn"
+            opencv:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
