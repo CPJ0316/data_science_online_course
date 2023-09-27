@@ -1,0 +1,2 @@
+Train,accuracy,test,precision,recall,fscore
+Descion Tree4,85.34,84.92,81.11,68.16,70.27
