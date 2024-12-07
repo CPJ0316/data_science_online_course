@@ -1,3 +1,4 @@
+# final project
 from operator import index
 import pandas as pd
 import numpy as np
@@ -11,6 +12,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn import tree
 import pickle
+
 
 def output(name,Y_pred_model,train_score,test_score,Y_pred_model_test,y_test,predict_data):
   acc_model = round(train_score * 100, 2)
