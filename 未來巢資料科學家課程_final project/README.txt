@@ -1,3 +1,7 @@
+project 說明
+進行加密貨幣錢包分類，sheet1共有21463936筆資料，6個欄位、sheet2共有3334筆資料，36個欄位。需要將錢包分類為POOL、EXCHANGE、GAMBLING
+
+
 1.
 balance、4、6三個資料夾為用2、4、6個的label進行訓練的結果(關於label的詳細內容於程式碼中有用註解說明)
 
